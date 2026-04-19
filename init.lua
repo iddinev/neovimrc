@@ -1,0 +1,7 @@
+-- vim: set shiftwidth=2 expandtab:
+
+require("options")
+
+require("keymaps")
+
+require("plugins")

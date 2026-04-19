@@ -1,0 +1,67 @@
+# =========================
+# Neovim runtime artifacts
+# =========================
+
+# swap / backup / undo
+*.swp
+*.swo
+*~
+*.bak
+*.undo
+
+# sessions
+Session.vim
+session/
+sessions/
+
+# logs
+log
+logs/
+*.log
+lsp.log
+
+# compiled Lua
+*.luac
+
+# =========================
+# Plugin / tooling artifacts
+# (only relevant if stored inside config dir)
+# =========================
+
+# lazy.nvim lockfile (optional: ignore if you want reproducibility)
+lazy-lock.json
+
+# package managers / tooling
+mason/
+packer_compiled.lua
+
+# treesitter (if manually redirected)
+parser/
+parsers/
+
+# cache / temp
+cache/
+tmp/
+
+# =========================
+# Spell checking (user-specific)
+# =========================
+
+spell/*.add
+spell/*.spl
+
+# =========================
+# OS-specific (Linux)
+# =========================
+
+# filesystem noise
+*~
+
+# =========================
+# Safety: ignore accidental data dirs
+# =========================
+
+# if stdpath was overridden into config
+data/
+state/
+site/

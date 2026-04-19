@@ -1,0 +1,46 @@
+-- vim: set shiftwidth=2 expandtab:
+
+local M = {}
+
+local function patch_hl(group, opts)
+  local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = group, link = false })
+  if not ok or not hl or vim.tbl_isempty(hl) then return end
+
+  for k, v in pairs(opts) do
+    hl[k] = v
+  end
+
+  vim.api.nvim_set_hl(0, group, hl)
+end
+
+function M.apply()
+  patch_hl("GitSignsAdd", { bold = true })
+  patch_hl("GitSignsChange", { bold = true })
+  patch_hl("GitSignsDelete", { bold = true })
+  patch_hl("GitSignsCurrentLineBlame", { bold = true })
+end
+
+-- initialization (runs once when module is required)
+function M.setup()
+
+  vim.schedule(function()
+    M.apply()
+  end)
+  -- reapply after colorscheme settles (background change hook)
+  vim.api.nvim_create_autocmd("OptionSet", {
+    pattern = "background",
+    callback = function()
+      M.apply()
+    end,
+  })
+  end
+  -- -- reapply on any colorscheme change
+  -- vim.api.nvim_create_autocmd("ColorScheme", {
+    -- callback = M.apply,
+  -- })
+-- end
+
+-- auto-run setup on require
+M.setup()
+
+return M
