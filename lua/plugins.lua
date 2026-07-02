@@ -32,6 +32,11 @@ require("lazy").setup({
           TreesitterContext = { bg = colors.surface0 },
           TreesitterContextLineNumber = { bg = colors.base },
           TreesitterContextBottom = { style = {} },
+          Folded = { bg = colors.none },
+          GitSignsAdd = { bold = true },
+          GitSignsChange = { bold = true },
+          GitSignsDelete = { bold = true },
+          GitSignsCurrentLineBlame = { bold = true },
         }
       end,
       integrations = {
@@ -84,17 +89,62 @@ require("lazy").setup({
 
   -- SYNTAX
   {
-    "nvim-treesitter/nvim-treesitter",
+    "neovim-treesitter/nvim-treesitter",
+    dependencies = {
+      "neovim-treesitter/treesitter-parser-registry",
+    },
+
     lazy = false,
     build = ":TSUpdate",
 
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-    },
-  },
+    config = function()
+      local ts = require("nvim-treesitter")
 
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
+      ts.setup()
+
+      local languages = {
+        "bash",
+        "json",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "python",
+        "go",
+        "javascript",
+        "toml",
+        "vim",
+        "vimdoc",
+        "yaml",
+      }
+
+      ts.install(languages)
+
+      local filetypes = {}
+
+      for _, lang in ipairs(languages) do
+        local ok, fts = pcall(vim.treesitter.language.get_filetypes, lang)
+        if ok then
+          vim.list_extend(filetypes, fts)
+        end
+      end
+
+      local group = vim.api.nvim_create_augroup("Treesitter", { clear = true })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        pattern = filetypes,
+
+        callback = function(ev)
+          vim.treesitter.start(ev.buf)
+
+          vim.wo[0].foldmethod = "expr"
+          vim.wo[0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+
+          vim.bo[ev.buf].indentexpr =
+            "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
+    end,
   },
 
   {
@@ -122,6 +172,21 @@ require("lazy").setup({
 
       on_attach = nil, -- leave nil unless custom logic needed
     },
+  },
+
+  {
+      "chrisgrieser/nvim-origami",
+      event = "VeryLazy",
+      opts = {
+        foldKeymaps = { setup = false, },
+      },
+  },
+
+  {
+    'lcheylus/overlength.nvim',
+     opts = {
+       highlight_to_eol = false,
+     },
   },
 
   -- GIT
@@ -217,26 +282,3 @@ require("lazy").setup({
   },
 
 })
-
-vim.api.nvim_create_autocmd("FileType", {
-  callback = function(args)
-    vim.treesitter.start(args.buf)
-  end,
-})
-local ts_select = require("nvim-treesitter-textobjects.select")
-
-vim.keymap.set({ "x", "o" }, "af", function()
-  ts_select.select_textobject("@function.outer")
-end)
-
-vim.keymap.set({ "x", "o" }, "if", function()
-  ts_select.select_textobject("@function.inner")
-end)
-
-vim.keymap.set({ "x", "o" }, "ac", function()
-  ts_select.select_textobject("@class.outer")
-end)
-
-vim.keymap.set({ "x", "o" }, "ic", function()
-  ts_select.select_textobject("@class.inner")
-end)

@@ -32,25 +32,6 @@ opt.breakindentopt = "min:20,shift:0,sbr"
 -- text layout
 opt.textwidth = 120
 opt.scrolloff = 999
-local ns = vim.api.nvim_create_namespace("overflow")
-
-local function highlight_overflow()
-  local buf = 0
-  local tw = vim.bo.textwidth
-  if tw == 0 then return end
-
-  vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
-
-  for i, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
-    if #line > tw then
-      vim.api.nvim_buf_add_highlight(buf, ns, "Error", i - 1, tw, tw + 1)
-    end
-  end
-end
-
-vim.api.nvim_create_autocmd({ "BufEnter", "TextChanged", "InsertLeave" }, {
-  callback = highlight_overflow,
-})
 
 -- indentation
 opt.autoindent = true
@@ -69,11 +50,20 @@ opt.listchars = {
   nbsp = "␣", -- UTF 2423
 }
 
--- line numbers
-opt.number = true
-opt.relativenumber = true
-opt.numberwidth = 2
+opt.foldlevel = 2
+opt.foldlevelstart = 2
+opt.foldcolumn = "1"
+opt.fillchars = {
+    foldopen = "⌄", -- UTF 2304
+    foldclose = "›", -- 203A
+    foldsep = " ",
+    foldinner = "│",
+    fold = " ", -- UTF 2502
+}
 
+-- line numbers
+opt.relativenumber = true
+opt.statuscolumn = "%s%=%{v:virtnum < 0 ? '' : (v:relnum == 0 ? v:lnum : v:relnum)} %C "
 
 -- window splitting
 opt.splitright = true
