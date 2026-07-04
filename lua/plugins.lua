@@ -1,5 +1,15 @@
 -- vim: set shiftwidth=2 expandtab:
 
+-- OS DEPENDENCIES
+-- nerdfonts
+-- neovim-treesitter/nvim-treesitter:
+-- tree-sitter
+-- ibhagwan/fzf-lua:
+-- -- fzf
+-- -- fd
+-- -- rg
+-- -- bat
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 vim.o.shell = "/usr/bin/bash"
 
@@ -148,6 +158,99 @@ require("lazy").setup({
   },
 
   {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
+    event = "VeryLazy",
+
+    opts = {
+      select = {
+        lookahead = true,
+      },
+
+      move = {
+        set_jumps = true,
+      },
+    },
+
+    config = function(_, opts)
+      require("nvim-treesitter-textobjects").setup(opts)
+
+      local select = require("nvim-treesitter-textobjects.select")
+      local move = require("nvim-treesitter-textobjects.move")
+      local swap = require("nvim-treesitter-textobjects.swap")
+
+      -- Select
+      for _, mode in ipairs({ "x", "o" }) do
+        vim.keymap.set(mode, "af", function()
+          select.select_textobject("@function.outer", "textobjects", mode)
+        end)
+
+        vim.keymap.set(mode, "if", function()
+          select.select_textobject("@function.inner", "textobjects", mode)
+        end)
+
+        vim.keymap.set(mode, "ac", function()
+          select.select_textobject("@class.outer", "textobjects", mode)
+        end)
+
+        vim.keymap.set(mode, "ic", function()
+          select.select_textobject("@class.inner", "textobjects", mode)
+        end)
+
+        vim.keymap.set(mode, "aa", function()
+          select.select_textobject("@parameter.outer", "textobjects", mode)
+        end)
+
+        vim.keymap.set(mode, "ia", function()
+          select.select_textobject("@parameter.inner", "textobjects", mode)
+        end)
+      end
+
+      -- Move
+      vim.keymap.set({ "n", "x", "o" }, "]f", function()
+        move.goto_next_start("@function.outer", "textobjects")
+      end)
+
+      vim.keymap.set({ "n", "x", "o" }, "[f", function()
+        move.goto_previous_start("@function.outer", "textobjects")
+      end)
+
+      vim.keymap.set({ "n", "x", "o" }, "]F", function()
+        move.goto_next_end("@function.outer", "textobjects")
+      end)
+
+      vim.keymap.set({ "n", "x", "o" }, "[F", function()
+        move.goto_previous_end("@function.outer", "textobjects")
+      end)
+
+      vim.keymap.set({ "n", "x", "o" }, "]c", function()
+        move.goto_next_start("@class.outer", "textobjects")
+      end)
+
+      vim.keymap.set({ "n", "x", "o" }, "]C", function()
+        move.goto_next_end("@class.outer", "textobjects")
+      end)
+
+      vim.keymap.set({ "n", "x", "o" }, "[c", function()
+        move.goto_previous_start("@class.outer", "textobjects")
+      end)
+
+      vim.keymap.set({ "n", "x", "o" }, "[C", function()
+        move.goto_previous_end("@class.outer", "textobjects")
+      end)
+
+      -- Swap
+      vim.keymap.set("n", "<leader>a", function()
+        swap.swap_next("@parameter.inner")
+      end)
+
+      vim.keymap.set("n", "<leader>A", function()
+        swap.swap_previous("@parameter.inner")
+      end)
+    end,
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter-context",
     event = "BufReadPost",
 
@@ -186,10 +289,41 @@ require("lazy").setup({
     'lcheylus/overlength.nvim',
      opts = {
        highlight_to_eol = false,
+       disable_ft = { 'GV', 'help', 'helpdoc' }
      },
   },
 
   -- GIT
+
+  {
+    'tpope/vim-fugitive',
+  },
+
+  {
+    "junegunn/gv.vim",
+    dependencies = { "tpope/vim-fugitive" },
+    init = function()
+      vim.api.nvim_create_user_command("GVA", function(opts)
+        vim.cmd({ cmd = "GV", args = { "--all" }, bang = opts.bang })
+      end, {
+        bang = true,
+      })
+    end,
+    config = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "GV",
+        callback = function()
+          vim.opt_local.listchars:remove("trail")
+        end,
+      })
+    end,
+  },
+
+  {
+    'sindrets/diffview.nvim',
+    opts = {},
+  },
+
   {
     -- No reset hunk index functionality as of writing.
     -- Consider mini.nvim or other gitsign plugins.
@@ -233,7 +367,7 @@ require("lazy").setup({
           end
         end)
 
-        map('n', '[c', function()
+        map('n', '[h', function()
           if vim.wo.diff then
             vim.cmd.normal({'[c', bang = true})
           else
