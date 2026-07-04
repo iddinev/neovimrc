@@ -282,6 +282,7 @@ require("lazy").setup({
       event = "VeryLazy",
       opts = {
         foldKeymaps = { setup = false, },
+        pauseFoldsOnSearch = false,
       },
   },
 
