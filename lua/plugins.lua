@@ -2,6 +2,7 @@
 
 -- OS DEPENDENCIES
 -- nerdfonts
+-- noto-fonts-emoji
 -- neovim-treesitter/nvim-treesitter:
 -- tree-sitter
 -- ibhagwan/fzf-lua:
@@ -29,6 +30,12 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 
   -- UI
+  {
+    "ibhagwan/fzf-lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {},
+  },
+
   {
     "catppuccin/nvim",
     name = "catppuccin",
@@ -295,7 +302,6 @@ require("lazy").setup({
   },
 
   -- GIT
-
   {
     'tpope/vim-fugitive',
   },
