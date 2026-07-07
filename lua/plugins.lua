@@ -4,7 +4,7 @@
 -- nerdfonts
 -- noto-fonts-emoji
 -- neovim-treesitter/nvim-treesitter:
--- tree-sitter
+-- -- tree-sitter
 -- ibhagwan/fzf-lua:
 -- -- fzf
 -- -- fd
@@ -33,7 +33,37 @@ require("lazy").setup({
   {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {},
+    opts = {
+      winopts = {
+        preview = {
+          title = false,
+          horizontal = "right:50%",
+        },
+      },
+      keymap = {
+        builtin = {
+          -- WORKAROUND: these sit next to the defaults (can be seen with the help window F1)
+          -- currently defaults can't explicitly be remmaped
+          ["<M-S-k>"] = "preview-page-up",
+          ["<M-S-j>"] = "preview-page-down",
+          ["<M-S-h>"] = "preview-top",
+          ["<M-S-l>"] = "preview-bottom",
+        },
+      },
+      fzf_opts = {
+        ["--wrap=word"] = true
+      },
+    },
+    keys = function()
+      local fzf = require("fzf-lua")
+      return {
+        { "<F1>",   fzf.buffers,            desc = "Buffers" },
+        { "<F7>",   fzf.files,              desc = "Files" },
+        { "<C-f>",  fzf.live_grep,          desc = "Live Grep" },
+        { "<C-h>",  fzf.helptags,           desc = "Help Tags" },
+        { "<C-r>",  fzf.command_history,    desc = "Command History" },
+      }
+    end,
   },
 
   {
