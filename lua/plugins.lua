@@ -331,6 +331,11 @@ require("lazy").setup({
      },
   },
 
+  {
+    "numToStr/Comment.nvim",
+    opts = {},
+  },
+
   -- GIT
   {
     'tpope/vim-fugitive',
