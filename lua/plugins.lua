@@ -60,7 +60,6 @@ require("lazy").setup({
         { "<F1>",   fzf.buffers,            desc = "Buffers" },
         { "<F7>",   fzf.files,              desc = "Files" },
         { "<C-f>",  fzf.live_grep,          desc = "Live Grep" },
-        { "<C-h>",  fzf.helptags,           desc = "Help Tags" },
         { "<C-r>",  fzf.command_history,    desc = "Command History" },
       }
     end,
@@ -131,6 +130,85 @@ require("lazy").setup({
         lualine_y = {},
         lualine_z = {},
       },
+    },
+  },
+
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+
+    cmd = {
+      "NvimTreeOpen",
+      "NvimTreeToggle",
+      "NvimTreeFindFile",
+    },
+
+    keys = {
+      { "<F10>", "<cmd>NvimTreeToggle<CR>", desc = "File tree" },
+    },
+
+    opts = {
+      view = {
+        side = "right",
+
+        width = 70,
+      },
+
+      filters = {
+        dotfiles = false,
+        git_ignored = false,
+      },
+
+      sync_root_with_cwd = true,
+      update_focused_file = {
+        enable = true,
+        update_root = true,
+      },
+
+      renderer = {
+        group_empty = true,
+        icons = {
+          show = {
+            file = true,
+            folder = true,
+            folder_arrow = true,
+            git = true,
+          },
+        },
+      },
+
+      sort = {
+        sorter = "name",
+      },
+
+      actions = {
+        open_file = {
+          quit_on_open = false,
+        },
+      },
+
+      on_attach = function(bufnr)
+        local api = require("nvim-tree.api")
+
+        api.config.mappings.default_on_attach(bufnr)
+
+        local opts = function(desc)
+          return {
+            desc = "nvim-tree: " .. desc,
+            buffer = bufnr,
+            noremap = true,
+            silent = true,
+            nowait = true,
+          }
+        end
+
+        -- Mirror NERDTree/FZF bindings
+        vim.keymap.set("n", "<C-t>", api.node.open.tab, opts("Open: Tab"))
+        vim.keymap.set("n", "<C-s>", api.node.open.horizontal, opts("Open: Horizontal Split"))
+        vim.keymap.set("n", "<C-v>", api.node.open.vertical, opts("Open: Vertical Split"))
+      end,
     },
   },
 
