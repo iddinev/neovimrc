@@ -15,8 +15,8 @@
      ~~No ignored files~~
      No submodules
      ~~Dynamic ignore files/only files~~
-5. Commenting
+5. ~~Commenting~~
 6. Autopairs
-7. Project/startup
+7. ~~Project/startup~~
 8. Project sidebar explorer
    Start with nvim-tree.lua
