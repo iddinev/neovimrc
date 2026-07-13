@@ -578,4 +578,10 @@ require("lazy").setup({
     end,
   },
 
+  -- MISC
+  {
+    "junegunn/vim-peekaboo",
+    event = "VeryLazy",
+  },
+
 })
