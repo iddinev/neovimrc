@@ -394,7 +394,7 @@ require("lazy").setup({
 
       separator = nil, -- or "-" for visual separation
 
-      zindex = 20,
+      zindex = 10,
 
       on_attach = nil, -- leave nil unless custom logic needed
     },
@@ -594,6 +594,10 @@ require("lazy").setup({
 
   {
     "chaoren/vim-wordmotion",
+  },
+
+  {
+    "michaeljsmith/vim-indent-object",
   },
 
 })
