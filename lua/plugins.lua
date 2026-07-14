@@ -294,9 +294,9 @@ require("lazy").setup({
       local move = require("nvim-treesitter-textobjects.move")
       local swap = require("nvim-treesitter-textobjects.swap")
 
+      -- Select
       local modes = { "x", "o" }
 
-      -- Select
       vim.keymap.set(modes, "af", function()
         select.select_textobject("@function.outer", "textobjects")
       end)
@@ -330,6 +330,8 @@ require("lazy").setup({
       end)
 
       -- Move
+      local modes = {"n", "x", "o" }
+
       vim.keymap.set(modes, "]f", function()
         move.goto_next_start("@function.outer", "textobjects")
       end)
@@ -361,6 +363,15 @@ require("lazy").setup({
       vim.keymap.set(modes, "[C", function()
         move.goto_previous_end("@class.outer", "textobjects")
       end)
+
+      vim.keymap.set(modes, "[b", function()
+        move.goto_previous_start("@block.outer", "textobjects")
+      end)
+
+      vim.keymap.set(modes, "]b", function()
+        move.goto_next_start("@block.outer", "textobjects")
+      end)
+
 
       -- Swap
       vim.keymap.set("n", "<leader>a", function()
