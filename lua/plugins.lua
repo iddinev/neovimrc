@@ -584,4 +584,8 @@ require("lazy").setup({
     event = "VeryLazy",
   },
 
+  {
+    "chaoren/vim-wordmotion",
+  },
+
 })
