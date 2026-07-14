@@ -294,63 +294,71 @@ require("lazy").setup({
       local move = require("nvim-treesitter-textobjects.move")
       local swap = require("nvim-treesitter-textobjects.swap")
 
+      local modes = { "x", "o" }
+
       -- Select
-      for _, mode in ipairs({ "x", "o" }) do
-        vim.keymap.set(mode, "af", function()
-          select.select_textobject("@function.outer", "textobjects", mode)
-        end)
+      vim.keymap.set(modes, "af", function()
+        select.select_textobject("@function.outer", "textobjects")
+      end)
 
-        vim.keymap.set(mode, "if", function()
-          select.select_textobject("@function.inner", "textobjects", mode)
-        end)
+      vim.keymap.set(modes, "if", function()
+        select.select_textobject("@function.inner", "textobjects")
+      end)
 
-        vim.keymap.set(mode, "ac", function()
-          select.select_textobject("@class.outer", "textobjects", mode)
-        end)
+      vim.keymap.set(modes, "ac", function()
+        select.select_textobject("@class.outer", "textobjects")
+      end)
 
-        vim.keymap.set(mode, "ic", function()
-          select.select_textobject("@class.inner", "textobjects", mode)
-        end)
+      vim.keymap.set(modes, "ic", function()
+        select.select_textobject("@class.inner", "textobjects")
+      end)
 
-        vim.keymap.set(mode, "aa", function()
-          select.select_textobject("@parameter.outer", "textobjects", mode)
-        end)
+      vim.keymap.set(modes, "aa", function()
+        select.select_textobject("@parameter.outer", "textobjects")
+      end)
 
-        vim.keymap.set(mode, "ia", function()
-          select.select_textobject("@parameter.inner", "textobjects", mode)
-        end)
-      end
+      vim.keymap.set(modes, "ia", function()
+        select.select_textobject("@parameter.inner", "textobjects")
+      end)
+
+      vim.keymap.set(modes, "ab", function()
+        select.select_textobject("@block.outer", "textobjects")
+      end)
+
+      vim.keymap.set(modes, "ib", function()
+        select.select_textobject("@block.inner", "textobjects")
+      end)
 
       -- Move
-      vim.keymap.set({ "n", "x", "o" }, "]f", function()
+      vim.keymap.set(modes, "]f", function()
         move.goto_next_start("@function.outer", "textobjects")
       end)
 
-      vim.keymap.set({ "n", "x", "o" }, "[f", function()
+      vim.keymap.set(modes, "[f", function()
         move.goto_previous_start("@function.outer", "textobjects")
       end)
 
-      vim.keymap.set({ "n", "x", "o" }, "]F", function()
+      vim.keymap.set(modes, "]F", function()
         move.goto_next_end("@function.outer", "textobjects")
       end)
 
-      vim.keymap.set({ "n", "x", "o" }, "[F", function()
+      vim.keymap.set(modes, "[F", function()
         move.goto_previous_end("@function.outer", "textobjects")
       end)
 
-      vim.keymap.set({ "n", "x", "o" }, "]c", function()
+      vim.keymap.set(modes, "]c", function()
         move.goto_next_start("@class.outer", "textobjects")
       end)
 
-      vim.keymap.set({ "n", "x", "o" }, "]C", function()
+      vim.keymap.set(modes, "]C", function()
         move.goto_next_end("@class.outer", "textobjects")
       end)
 
-      vim.keymap.set({ "n", "x", "o" }, "[c", function()
+      vim.keymap.set(modes, "[c", function()
         move.goto_previous_start("@class.outer", "textobjects")
       end)
 
-      vim.keymap.set({ "n", "x", "o" }, "[C", function()
+      vim.keymap.set(modes, "[C", function()
         move.goto_previous_end("@class.outer", "textobjects")
       end)
 
