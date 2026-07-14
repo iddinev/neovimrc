@@ -557,10 +557,6 @@ require("lazy").setup({
             { type = "bookmarks", header = { "   Bookmarks" } },
         }
 
-        -- Automatically save the current session when quitting or
-        -- before loading another session.
-        vim.g.startify_session_persistence = 1
-
         -- Store sessions outside projects.
         vim.g.startify_session_dir =
             vim.fn.stdpath("state") .. "/sessions"
@@ -574,7 +570,7 @@ require("lazy").setup({
         vim.g.startify_session_number = 20
 
         -- Keep existing buffers when restoring.
-        vim.g.startify_session_delete_buffers = 0
+        vim.g.startify_session_delete_buffers = 1
 
         vim.g.startify_session_before_save = {
             'echo "Saving session..."',
