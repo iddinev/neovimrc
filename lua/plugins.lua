@@ -433,6 +433,56 @@ require("lazy").setup({
     opts = {},
   },
 
+  -- COMPLETION
+  {
+    "saghen/blink.cmp",
+
+    -- Optional: snippet collection for the built-in snippets source
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+    },
+
+    -- Track the stable v1 release
+    version = "1.*",
+
+    ---@module "blink.cmp"
+    ---@type blink.cmp.Config
+    opts = {
+      -- Completion keybindings
+      keymap = {
+        preset = "default",
+      },
+
+      cmdline = {
+        enabled = true,
+      },
+
+      appearance = {
+        -- Use "normal" if you use the regular Nerd Font
+        nerd_font_variant = "mono",
+      },
+
+      completion = {
+        documentation = {
+          auto_show = true,
+        },
+      },
+
+      sources = {
+        default = {
+          "lsp",
+          "path",
+          "snippets",
+          "buffer",
+        },
+      },
+
+      fuzzy = {
+        implementation = "prefer_rust_with_warning",
+      },
+    },
+  },
+
   -- GIT
   {
     'tpope/vim-fugitive',
