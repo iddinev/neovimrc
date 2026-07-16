@@ -57,7 +57,7 @@ require("lazy").setup({
     keys = function()
       local fzf = require("fzf-lua")
       return {
-        { "<F1>",   fzf.buffers,            desc = "Buffers" },
+        { "<F1>",   fzf.builtin,            desc = "Pickers" },
         { "<F7>",   fzf.files,              desc = "Files" },
         { "<C-f>",  fzf.live_grep,          desc = "Live Grep" },
         { "<C-r>",  fzf.command_history,    desc = "Command History" },
