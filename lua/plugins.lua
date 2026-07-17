@@ -424,7 +424,7 @@ require("lazy").setup({
     'lcheylus/overlength.nvim',
      opts = {
        highlight_to_eol = false,
-       disable_ft = { 'GV', 'help', 'helpdoc' }
+       disable_ft = { 'GV', 'help', 'helpdoc', 'qf' }
      },
   },
 
@@ -481,6 +481,51 @@ require("lazy").setup({
         implementation = "prefer_rust_with_warning",
       },
     },
+  },
+
+  {
+    "mason-org/mason.nvim",
+    opts = {},
+  },
+
+  {
+      "mason-org/mason-lspconfig.nvim",
+      dependencies = {
+          "mason-org/mason.nvim",
+          "neovim/nvim-lspconfig",
+      },
+
+      opts = {
+          ensure_installed = {
+              "bashls",
+              "basedpyright",
+              "lua_ls",
+              "yamlls",
+              "marksman",
+          },
+
+          automatic_enable = true,
+      },
+  },
+
+  {
+    "neovim/nvim-lspconfig",
+  },
+
+  {
+      "j-hui/fidget.nvim",
+      event = "LspAttach",
+      opts = {
+          progress = {
+              suppress_on_insert = true,
+              ignore_done_already = true,
+          },
+          notification = {
+              window = {
+                  border = "rounded",
+              },
+          },
+      },
   },
 
   -- GIT
