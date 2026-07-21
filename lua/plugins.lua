@@ -73,16 +73,13 @@ require("lazy").setup({
     opts = {
       auto_integrations = true,
       flavour = "macchiato",
+      -- Complete overrides
       custom_highlights = function(colors)
         return {
           TreesitterContext = { bg = colors.surface0 },
           TreesitterContextLineNumber = { bg = colors.base },
           TreesitterContextBottom = { style = {} },
           Folded = { bg = colors.none },
-          GitSignsAdd = { bold = true },
-          GitSignsChange = { bold = true },
-          GitSignsDelete = { bold = true },
-          GitSignsCurrentLineBlame = { bold = true },
         }
       end,
       integrations = {
@@ -105,6 +102,16 @@ require("lazy").setup({
     config = function(_, opts)
       require("catppuccin").setup(opts)
       vim.cmd.colorscheme("catppuccin")
+      -- Add styles
+      for src, dst in pairs({
+        Added = "GitSignsAdd",
+        Changed = "GitSignsChange",
+        Removed = "GitSignsDelete",
+      }) do
+        local hl = vim.api.nvim_get_hl(0, { name = src, link = false })
+        hl.bold = true
+        vim.api.nvim_set_hl(0, dst, hl)
+      end
     end,
   },
 
