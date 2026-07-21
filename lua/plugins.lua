@@ -450,7 +450,7 @@ require("lazy").setup({
     opts = {
       -- Completion keybindings
       keymap = {
-        preset = "default",
+        preset = "super-tab",
       },
 
       cmdline = {
@@ -463,8 +463,34 @@ require("lazy").setup({
       },
 
       completion = {
+        ghost_text = {
+          enabled = true,
+        },
+        list = {
+          selection = {
+            auto_insert = false,
+          },
+        },
         documentation = {
           auto_show = true,
+        },
+        menu = {
+          draw = {
+            columns = {
+              { "kind_icon" },
+              { "label", gap = 1 },
+              { "kind" },
+              { "source_name" },
+            },
+
+            components = {
+              source_name = {
+                text = function(ctx)
+                  return ctx.source_name
+                end,
+              },
+            },
+          },
         },
       },
 
@@ -502,6 +528,7 @@ require("lazy").setup({
               "lua_ls",
               "yamlls",
               "marksman",
+              "vimls",
           },
 
           automatic_enable = true,

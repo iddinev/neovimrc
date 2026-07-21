@@ -29,15 +29,3 @@ local map = vim.keymap.set
 map("n", "[d", vim.diagnostic.goto_prev)
 map("n", "]d", vim.diagnostic.goto_next)
 map("n", "<leader>e", vim.diagnostic.open_float)
-
-map("n", "<C-d>", function()
-    if not vim.lsp.util.scroll_preview(4) then
-        return "<C-d>"
-    end
-end, { expr = true })
-
-map("n", "<C-u>", function()
-    if not vim.lsp.util.scroll_preview(-4) then
-        return "<C-u>"
-    end
-end, { expr = true })
