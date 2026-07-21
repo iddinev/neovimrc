@@ -47,6 +47,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 local map = vim.keymap.set
 
-map("n", "[d", vim.diagnostic.goto_prev)
-map("n", "]d", vim.diagnostic.goto_next)
+map("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end)
+map("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end)
 map("n", "<leader>e", vim.diagnostic.open_float)

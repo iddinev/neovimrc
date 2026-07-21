@@ -110,6 +110,7 @@ require("lazy").setup({
       }) do
         local hl = vim.api.nvim_get_hl(0, { name = src, link = false })
         hl.bold = true
+        ---@diagnostic disable-next-line: param-type-mismatch
         vim.api.nvim_set_hl(0, dst, hl)
       end
     end,
@@ -348,45 +349,45 @@ require("lazy").setup({
       end)
 
       -- Move
-      local modes = {"n", "x", "o" }
+      local move_modes = {"n", "x", "o" }
 
-      vim.keymap.set(modes, "]f", function()
+      vim.keymap.set(move_modes, "]f", function()
         move.goto_next_start("@function.outer", "textobjects")
       end)
 
-      vim.keymap.set(modes, "[f", function()
+      vim.keymap.set(move_modes, "[f", function()
         move.goto_previous_start("@function.outer", "textobjects")
       end)
 
-      vim.keymap.set(modes, "]F", function()
+      vim.keymap.set(move_modes, "]F", function()
         move.goto_next_end("@function.outer", "textobjects")
       end)
 
-      vim.keymap.set(modes, "[F", function()
+      vim.keymap.set(move_modes, "[F", function()
         move.goto_previous_end("@function.outer", "textobjects")
       end)
 
-      vim.keymap.set(modes, "]c", function()
+      vim.keymap.set(move_modes, "]c", function()
         move.goto_next_start("@class.outer", "textobjects")
       end)
 
-      vim.keymap.set(modes, "]C", function()
+      vim.keymap.set(move_modes, "]C", function()
         move.goto_next_end("@class.outer", "textobjects")
       end)
 
-      vim.keymap.set(modes, "[c", function()
+      vim.keymap.set(move_modes, "[c", function()
         move.goto_previous_start("@class.outer", "textobjects")
       end)
 
-      vim.keymap.set(modes, "[C", function()
+      vim.keymap.set(move_modes, "[C", function()
         move.goto_previous_end("@class.outer", "textobjects")
       end)
 
-      vim.keymap.set(modes, "[b", function()
+      vim.keymap.set(move_modes, "[b", function()
         move.goto_previous_start("@block.outer", "textobjects")
       end)
 
-      vim.keymap.set(modes, "]b", function()
+      vim.keymap.set(move_modes, "]b", function()
         move.goto_next_start("@block.outer", "textobjects")
       end)
 
