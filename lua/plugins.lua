@@ -861,4 +861,15 @@ require("lazy").setup({
   {
     "michaeljsmith/vim-indent-object",
   },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      preset = "lazy",
+    },
+  },
 })
