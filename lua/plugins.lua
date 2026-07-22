@@ -566,18 +566,25 @@ require("lazy").setup({
     "mason-org/mason-lspconfig.nvim",
     dependencies = {
       "mason-org/mason.nvim",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
       "neovim/nvim-lspconfig",
     },
+    opts = {
+      automatic_enable = true,
+    },
+  },
 
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
     opts = {
       ensure_installed = {
         -- LSPs
-        "bashls",
+        "bash-language-server",
         "basedpyright",
-        "lua_ls",
-        "yamlls",
+        "lua-language-server",
+        "yaml-language-server",
         "marksman",
-        "vimls",
+        "vim-language-server",
 
         -- Formatters
         "stylua",
@@ -585,8 +592,6 @@ require("lazy").setup({
         "shfmt",
         "prettier",
       },
-
-      automatic_enable = true,
     },
   },
 
