@@ -481,6 +481,37 @@ require("lazy").setup({
     },
   },
 
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPost", "BufNewFile" },
+
+    config = function()
+      local lint = require("lint")
+
+      lint.linters_by_ft = {
+        sh = { "shellcheck" },
+        bash = { "shellcheck" },
+        zsh = { "shellcheck" },
+
+        markdown = { "markdownlint" },
+
+        yaml = { "yamllint" },
+
+        -- Python: basedpyright already provides diagnostics.
+        -- Lua: lua_ls already provides diagnostics.
+      }
+
+      local group = vim.api.nvim_create_augroup("nvim-lint", { clear = true })
+
+      vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
+        group = group,
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+    end,
+  },
+
   -- COMPLETION
   {
     "saghen/blink.cmp",
@@ -591,6 +622,11 @@ require("lazy").setup({
         "ruff",
         "shfmt",
         "prettier",
+
+        -- Linters
+        "shellcheck",
+        "markdownlint",
+        "yamllint",
       },
     },
   },
