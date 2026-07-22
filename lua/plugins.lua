@@ -651,6 +651,42 @@ require("lazy").setup({
     },
   },
 
+  -- AI
+  {
+    "zbirenbaum/copilot.lua",
+    event = "InsertEnter",
+    cmd = "Copilot",
+    build = ":Copilot auth",
+
+    opts = {
+      panel = {
+        enabled = false,
+      },
+
+      suggestion = {
+        enabled = true,
+        auto_trigger = true,
+        hide_during_completion = true,
+
+        keymap = {
+          accept = "<M-l>",
+          accept_word = "<M-w>",
+          accept_line = "<M-j>",
+          next = "<M-]>",
+          prev = "<M-[>",
+          dismiss = "<C-]>",
+        },
+      },
+
+      filetypes = {
+        help = false,
+        gitrebase = true,
+        gitcommit = true,
+        ["."] = false,
+      },
+    },
+  },
+
   -- GIT
   {
     "tpope/vim-fugitive",
