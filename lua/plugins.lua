@@ -687,6 +687,61 @@ require("lazy").setup({
     },
   },
 
+  {
+    "olimorris/codecompanion.nvim",
+    version = "^19.0.0",
+
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+
+    opts = {
+      opts = {
+        log_level = "INFO",
+      },
+
+      display = {
+        action_palette = {
+          provider = "fzf_lua",
+        },
+
+        chat = {
+          intro_message = "",
+        },
+      },
+
+      strategies = {
+        chat = {
+          adapter = "copilot",
+        },
+        inline = {
+          adapter = "copilot",
+        },
+      },
+    },
+
+    keys = {
+      {
+        "<leader>ac",
+        "<cmd>CodeCompanionChat Toggle<CR>",
+        desc = "AI Chat",
+      },
+      {
+        "<leader>aa",
+        "<cmd>CodeCompanionActions<CR>",
+        mode = { "n", "v" },
+        desc = "AI Actions",
+      },
+      {
+        "<leader>ai",
+        "<cmd>CodeCompanion<CR>",
+        mode = { "v" },
+        desc = "AI Inline",
+      },
+    },
+  },
+
   -- GIT
   {
     "tpope/vim-fugitive",
