@@ -1,5 +1,3 @@
--- vim: set shiftwidth=2 expandtab:
-
 -- OS DEPENDENCIES
 -- nerdfonts
 -- noto-fonts-emoji
@@ -51,16 +49,16 @@ require("lazy").setup({
         },
       },
       fzf_opts = {
-        ["--wrap=word"] = true
+        ["--wrap=word"] = true,
       },
     },
     keys = function()
       local fzf = require("fzf-lua")
       return {
-        { "<F1>",   fzf.builtin,            desc = "Pickers" },
-        { "<F7>",   fzf.files,              desc = "Files" },
-        { "<C-f>",  fzf.live_grep,          desc = "Live Grep" },
-        { "<C-r>",  fzf.command_history,    desc = "Command History" },
+        { "<F1>", fzf.builtin, desc = "Pickers" },
+        { "<F7>", fzf.files, desc = "Files" },
+        { "<C-f>", fzf.live_grep, desc = "Live Grep" },
+        { "<C-r>", fzf.command_history, desc = "Command History" },
       }
     end,
   },
@@ -87,11 +85,11 @@ require("lazy").setup({
           all = function(colors)
             local c_override = { bg = colors.surface1, gui = "bold" }
             return {
-              normal   = { c = c_override },
-              insert   = { c = c_override },
-              visual   = { c = c_override },
-              replace  = { c = c_override },
-              command  = { c = c_override },
+              normal = { c = c_override },
+              insert = { c = c_override },
+              visual = { c = c_override },
+              replace = { c = c_override },
+              command = { c = c_override },
               terminal = { c = c_override },
               inactive = { c = { bg = colors.mantle } },
             }
@@ -284,8 +282,7 @@ require("lazy").setup({
           vim.wo[0].foldmethod = "expr"
           vim.wo[0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
-          vim.bo[ev.buf].indentexpr =
-            "v:lua.require'nvim-treesitter'.indentexpr()"
+          vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })
     end,
@@ -349,7 +346,7 @@ require("lazy").setup({
       end)
 
       -- Move
-      local move_modes = {"n", "x", "o" }
+      local move_modes = { "n", "x", "o" }
 
       vim.keymap.set(move_modes, "]f", function()
         move.goto_next_start("@function.outer", "textobjects")
@@ -391,7 +388,6 @@ require("lazy").setup({
         move.goto_next_start("@block.outer", "textobjects")
       end)
 
-
       -- Swap
       vim.keymap.set("n", "<leader>a", function()
         swap.swap_next("@parameter.inner")
@@ -431,25 +427,58 @@ require("lazy").setup({
   },
 
   {
-      "chrisgrieser/nvim-origami",
-      event = "VeryLazy",
-      opts = {
-        foldKeymaps = { setup = false, },
-        pauseFoldsOnSearch = false,
-      },
+    "chrisgrieser/nvim-origami",
+    event = "VeryLazy",
+    opts = {
+      foldKeymaps = { setup = false },
+      pauseFoldsOnSearch = false,
+    },
   },
 
   {
-    'lcheylus/overlength.nvim',
-     opts = {
-       highlight_to_eol = false,
-       disable_ft = { 'GV', 'help', 'helpdoc', 'qf' }
-     },
+    "lcheylus/overlength.nvim",
+    opts = {
+      highlight_to_eol = false,
+      disable_ft = { "GV", "help", "helpdoc", "qf" },
+    },
   },
 
   {
     "numToStr/Comment.nvim",
     opts = {},
+  },
+
+  {
+    "stevearc/conform.nvim",
+    event = "VeryLazy",
+
+    opts = {
+      notify_on_error = true,
+
+      formatters_by_ft = {
+        lua = { "stylua" },
+        python = { "ruff_format" },
+        sh = { "shfmt" },
+        bash = { "shfmt" },
+        zsh = { "shfmt" },
+        yaml = { "prettier" },
+        markdown = { "prettier" },
+      },
+    },
+
+    keys = {
+      {
+        "<leader>f",
+        function()
+          require("conform").format({
+            async = true,
+            lsp_format = "fallback",
+          })
+        end,
+        mode = { "n", "v" },
+        desc = "Format buffer",
+      },
+    },
   },
 
   -- COMPLETION
@@ -534,24 +563,31 @@ require("lazy").setup({
   },
 
   {
-      "mason-org/mason-lspconfig.nvim",
-      dependencies = {
-          "mason-org/mason.nvim",
-          "neovim/nvim-lspconfig",
+    "mason-org/mason-lspconfig.nvim",
+    dependencies = {
+      "mason-org/mason.nvim",
+      "neovim/nvim-lspconfig",
+    },
+
+    opts = {
+      ensure_installed = {
+        -- LSPs
+        "bashls",
+        "basedpyright",
+        "lua_ls",
+        "yamlls",
+        "marksman",
+        "vimls",
+
+        -- Formatters
+        "stylua",
+        "ruff",
+        "shfmt",
+        "prettier",
       },
 
-      opts = {
-          ensure_installed = {
-              "bashls",
-              "basedpyright",
-              "lua_ls",
-              "yamlls",
-              "marksman",
-              "vimls",
-          },
-
-          automatic_enable = true,
-      },
+      automatic_enable = true,
+    },
   },
 
   {
@@ -559,24 +595,24 @@ require("lazy").setup({
   },
 
   {
-      "j-hui/fidget.nvim",
-      event = "LspAttach",
-      opts = {
-          progress = {
-              suppress_on_insert = true,
-              ignore_done_already = true,
-          },
-          notification = {
-              window = {
-                  border = "rounded",
-              },
-          },
+    "j-hui/fidget.nvim",
+    event = "LspAttach",
+    opts = {
+      progress = {
+        suppress_on_insert = true,
+        ignore_done_already = true,
       },
+      notification = {
+        window = {
+          border = "rounded",
+        },
+      },
+    },
   },
 
   -- GIT
   {
-    'tpope/vim-fugitive',
+    "tpope/vim-fugitive",
   },
 
   {
@@ -600,7 +636,7 @@ require("lazy").setup({
   },
 
   {
-    'sindrets/diffview.nvim',
+    "sindrets/diffview.nvim",
     opts = {},
   },
 
@@ -612,26 +648,25 @@ require("lazy").setup({
     opts = {
       sign_priority = 100,
       signs = {
-        add          = { text = "+" },
-        change       = { text = "*" },
-        delete       = { text = "−" }, -- UTF 2212
-        topdelete    = { text = "−" }, -- UTF 2212
+        add = { text = "+" },
+        change = { text = "*" },
+        delete = { text = "−" }, -- UTF 2212
+        topdelete = { text = "−" }, -- UTF 2212
         changedelete = { text = "~" },
       },
 
       current_line_blame = true,
       current_line_blame_opts = {
         virt_text = true,
-        virt_text_pos = 'right_align', -- 'eol' | 'overlay' | 'right_align'
+        virt_text_pos = "right_align", -- 'eol' | 'overlay' | 'right_align'
         delay = 100,
         ignore_whitespace = false,
         virt_text_priority = 100,
         use_focus = true,
       },
 
-
       on_attach = function(bufnr)
-        local gitsigns = require('gitsigns')
+        local gitsigns = require("gitsigns")
 
         local function map(mode, l, r, opts)
           opts = opts or {}
@@ -640,58 +675,60 @@ require("lazy").setup({
         end
 
         -- Navigation
-        map('n', ']h', function()
+        map("n", "]h", function()
           if vim.wo.diff then
-            vim.cmd.normal({']h', bang = true})
+            vim.cmd.normal({ "]h", bang = true })
           else
-            gitsigns.nav_hunk('next')
+            gitsigns.nav_hunk("next")
           end
         end)
 
-        map('n', '[h', function()
+        map("n", "[h", function()
           if vim.wo.diff then
-            vim.cmd.normal({'[c', bang = true})
+            vim.cmd.normal({ "[c", bang = true })
           else
-            gitsigns.nav_hunk('prev')
+            gitsigns.nav_hunk("prev")
           end
         end)
 
         -- Actions
-        map('n', '<leader>hs', gitsigns.stage_hunk)
-        map('n', '<leader>hr', gitsigns.reset_hunk)
+        map("n", "<leader>hs", gitsigns.stage_hunk)
+        map("n", "<leader>hr", gitsigns.reset_hunk)
 
-        map('v', '<leader>hs', function()
-          gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+        map("v", "<leader>hs", function()
+          gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
         end)
 
-        map('v', '<leader>hr', function()
-          gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+        map("v", "<leader>hr", function()
+          gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
         end)
 
-        map('n', '<leader>hS', gitsigns.stage_buffer)
-        map('n', '<leader>hR', gitsigns.reset_buffer)
-        map('n', '<leader>hp', gitsigns.preview_hunk)
-        map('n', '<leader>hi', gitsigns.preview_hunk_inline)
+        map("n", "<leader>hS", gitsigns.stage_buffer)
+        map("n", "<leader>hR", gitsigns.reset_buffer)
+        map("n", "<leader>hp", gitsigns.preview_hunk)
+        map("n", "<leader>hi", gitsigns.preview_hunk_inline)
 
-        map('n', '<leader>hb', function()
+        map("n", "<leader>hb", function()
           gitsigns.blame_line({ full = true })
         end)
 
-        map('n', '<leader>hd', gitsigns.diffthis)
+        map("n", "<leader>hd", gitsigns.diffthis)
 
-        map('n', '<leader>hD', function()
-          gitsigns.diffthis('~')
+        map("n", "<leader>hD", function()
+          gitsigns.diffthis("~")
         end)
 
-        map('n', '<leader>hQ', function() gitsigns.setqflist('all') end)
-        map('n', '<leader>hq', gitsigns.setqflist)
+        map("n", "<leader>hQ", function()
+          gitsigns.setqflist("all")
+        end)
+        map("n", "<leader>hq", gitsigns.setqflist)
 
         -- Toggles
-        map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-        map('n', '<leader>tw', gitsigns.toggle_word_diff)
+        map("n", "<leader>tb", gitsigns.toggle_current_line_blame)
+        map("n", "<leader>tw", gitsigns.toggle_word_diff)
 
         -- Text object
-        map({'o', 'x'}, 'ih', gitsigns.select_hunk)
+        map({ "o", "x" }, "ih", gitsigns.select_hunk)
       end,
     },
   },
@@ -702,36 +739,35 @@ require("lazy").setup({
     lazy = false,
 
     init = function()
-        vim.g.startify_lists = {
-            { type = "sessions",  header = { "   Sessions" } },
-            { type = "commands",  header = { "   Commands" } },
-            { type = "files",     header = { "   MRU" } },
-            { type = "dir",       header = { "   MRU " .. vim.fn.getcwd() } },
-            { type = "bookmarks", header = { "   Bookmarks" } },
-        }
+      vim.g.startify_lists = {
+        { type = "sessions", header = { "   Sessions" } },
+        { type = "commands", header = { "   Commands" } },
+        { type = "files", header = { "   MRU" } },
+        { type = "dir", header = { "   MRU " .. vim.fn.getcwd() } },
+        { type = "bookmarks", header = { "   Bookmarks" } },
+      }
 
-        -- Store sessions outside projects.
-        vim.g.startify_session_dir =
-            vim.fn.stdpath("state") .. "/sessions"
+      -- Store sessions outside projects.
+      vim.g.startify_session_dir = vim.fn.stdpath("state") .. "/sessions"
 
-        vim.fn.mkdir(vim.g.startify_session_dir, "p")
+      vim.fn.mkdir(vim.g.startify_session_dir, "p")
 
-        -- Show newest sessions first.
-        vim.g.startify_session_sort = 1
+      -- Show newest sessions first.
+      vim.g.startify_session_sort = 1
 
-        -- Keep more sessions.
-        vim.g.startify_session_number = 20
+      -- Keep more sessions.
+      vim.g.startify_session_number = 20
 
-        -- Keep existing buffers when restoring.
-        vim.g.startify_session_delete_buffers = 1
+      -- Keep existing buffers when restoring.
+      vim.g.startify_session_delete_buffers = 1
 
-        vim.g.startify_session_before_save = {
-            'echo "Saving session..."',
-        }
+      vim.g.startify_session_before_save = {
+        'echo "Saving session..."',
+      }
 
-        -- Optional
-        vim.g.startify_relative_path = 1
-        vim.g.startify_update_oldfiles = 1
+      -- Optional
+      vim.g.startify_relative_path = 1
+      vim.g.startify_update_oldfiles = 1
     end,
   },
 
@@ -748,5 +784,4 @@ require("lazy").setup({
   {
     "michaeljsmith/vim-indent-object",
   },
-
 })
